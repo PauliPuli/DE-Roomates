@@ -9,9 +9,10 @@
   },
   "keywords": [],
   "author": "Paulina San Martín",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.6.8",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
   }
 }
