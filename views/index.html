@@ -167,14 +167,14 @@ Articulos de limpieza</textarea
           $("#roommatesSelectModal").html("");
           roommates.forEach((r) => {
             $("#roommatesSelect").append(`
-          <option value="${r.nombre}">${r.nombre}</option>
+          <option value="${r.name}">${r.name}</option>
           `);
             $("#roommatesSelectModal").append(`
-          <option value="${r.nombre}">${r.nombre}</option>
+          <option value="${r.name}">${r.name}</option>
           `);
             $("#roommates").append(`
                   <tr>
-                    <td>${r.nombre}</td>
+                    <td>${r.name}</td>
                     <td class="text-danger">${r.debe ? r.debe : "-"}</td>
                     <td class="text-success">${r.recibe ? r.recibe : "-"}</td>
                   </tr>
@@ -184,7 +184,7 @@ Articulos de limpieza</textarea
           gastos.forEach((g) => {
             $("#gastosHistorial").append(`
                 <tr>
-                  <td>${g.roommate}</td>
+                  <td>${g.name}</td>
                   <td>${g.descripcion}</td>
                   <td>${g.monto}</td>
                   <td class="d-flex align-items-center justify-content-between">
@@ -211,10 +211,13 @@ Articulos de limpieza</textarea
         const roommateSelected = $("#roommatesSelect").val();
         const descripcion = $("#descripcion").val();
         const monto = Number($("#monto").val());
-        await fetch("http://localhost:3000/gasto", {
+        await fetch("/gasto", {
           method: "POST",
+          headers: {
+      "Content-Type": "application/json"
+    },
           body: JSON.stringify({
-            roommate: roommateSelected,
+            name: roommateSelected,
             descripcion,
             monto,
           }),
@@ -223,7 +226,7 @@ Articulos de limpieza</textarea
       };
 
       const deleteGasto = async (id) => {
-        await fetch("http://localhost:3000/gasto?id=" + id, {
+        await fetch("/gasto?id=" + id, {
           method: "DELETE",
         });
         imprimir();
@@ -233,10 +236,10 @@ Articulos de limpieza</textarea
         const roommateSelected = $("#roommatesSelectModal").val();
         const descripcion = $("#descripcionModal").val();
         const monto = Number($("#montoModal").val());
-        await fetch("http://localhost:3000/gasto?id=" + gastoEditing, {
+        await fetch("/gasto?id=" + gastoEditing, {
           method: "PUT",
           body: JSON.stringify({
-            roommate: roommateSelected,
+            name: roommateSelected,
             descripcion,
             monto,
           }),
@@ -247,8 +250,8 @@ Articulos de limpieza</textarea
 
       const editGasto = (id) => {
         gastoEditing = id;
-        const { roommate, descripcion, monto } = gastos.find((g) => g.id == id);
-        $("#roommatesSelectModal").val(roommate);
+        const { name, descripcion, monto } = gastos.find((g) => g.id == id);
+        $("#roommatesSelectModal").val(name);
         $("#descripcionModal").html(descripcion);
         $("#montoModal").val(monto);
       };
