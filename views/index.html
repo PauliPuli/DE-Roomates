@@ -238,6 +238,9 @@ Articulos de limpieza</textarea
         const monto = Number($("#montoModal").val());
         await fetch("/gasto?id=" + gastoEditing, {
           method: "PUT",
+          headers: {
+      "Content-Type": "application/json"
+    },
           body: JSON.stringify({
             name: roommateSelected,
             descripcion,

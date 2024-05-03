@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 const addCuenta = async (req, res) => {
   try {
     //llamamos al nombre del json de roommates
-// const name = roommieData.roommates.name;
-    const {name, descripcion, monto } = req.body;
-    const id= uuidv4().slice(4,12);
+    // const name = roommieData.roommates.name;
+    const { name, descripcion, monto } = req.body;
+    const id = uuidv4().slice(4, 12);
     const gastosQuery = {
       id,
       name,
@@ -35,32 +35,45 @@ const getCuenta = async (req, res) => {
   }
 };
 
-const editCuenta = async (req, res) => {
+const editCuenta = async (id, name, descripcion, monto) => {
   try {
-    const {name, descripcion, monto } = req.body;
-    const {id}=req.query
-    const gastosQuery = {
-      id,
-      name,
-      descripcion,
-      monto,
-    };
+    // const gastosQuery = {
+    //   id,
+    //   name,
+    //   descripcion,
+    //   monto,
+    // };
     const { gastos } = JSON.parse(
       fs.readFileSync("./data/gastos.json", "utf8")
     );
-    const editMonto= gastos.find(g => g.id === id);
-    if (editMonto){
-      editMonto.name= name;
-      editMonto.descripcion=descripcion;
-      editMonto.monto=monto;
-      fs.writeFileSync("./data/gastos.json", JSON.stringify({ gastos }));
+    const editMonto = gastos.find((g) => g.id === id);
+    if (editMonto) {
+      editMonto.name = name;
+      editMonto.descripcion = descripcion;
+      editMonto.monto = monto;
+      
     }
-  
-    return gastosQuery;
+    fs.writeFileSync("./data/gastos.json", JSON.stringify({ gastos }));
+    return editMonto;
   } catch (error) {
     console.log(error.message);
   }
 };
 
+const borrarCuenta= async(id)=>{
+  try{
+    console.log(id)
+    let { gastos } = JSON.parse(
+      fs.readFileSync("./data/gastos.json", "utf8")
+    );
+    console.log(gastos)
+    gastos = gastos.filter((g) => g.id !== id);
 
-export { addCuenta, getCuenta, editCuenta };
+    fs.writeFileSync("./data/gastos.json", JSON.stringify({ gastos }));
+
+  }catch(error){
+    console.log(error.message);
+  }
+}
+
+export { addCuenta, getCuenta, editCuenta, borrarCuenta };

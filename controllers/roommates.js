@@ -6,7 +6,7 @@ import { addRandom, getRandom, calcularCuentas } from "../queries/rommies.js";
 const addRoommate=async (req,res)=>{
 try{
     await addRandom();
-    calcularCuentas();
+    await calcularCuentas();
     res.redirect("/");
 }catch(error){
 res.status(500).send(error.message)
